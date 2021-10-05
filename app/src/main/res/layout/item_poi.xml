@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/poiContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:padding="16dp"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/poiName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            tool:text= "Poi name" />
+    </LinearLayout>
+</LinearLayout>

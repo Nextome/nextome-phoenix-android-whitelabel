@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Nextome Phoenix TestApp</string>
+    <string name="scan_period">Scan period</string>
+    <string name="between_scan_period">Between Scan Period</string>
+    <string name="beacon_list_max_size">Beacon list max size</string>
+    <string name="permission_request_rationale">Nextome Indoor Positioning collects location data to enable devices and assets localization even when the app is closed or not in use.</string>
+    <string name="beacons_empty">Scanning in progress…</string>
+    <string name="beacon_rssi_threshold">RSSI Threshold</string>
+    <string name="permission_denied_rationale">Please accept permissions to use Nextome Test app</string>
+    <string name="permission_background_denied_rationale">Nextome Test App will NOT work in background</string>
+    <string name="permission_request_title">Location in background required</string>
+    <string name="permission_ok">Ok</string>
+    <string name="permission_request_background">Allow access to position in background</string>
+    <string name="permission_request">Allow permission for location and storage.</string>
+    <string-array name="localization_method_array">
+        <item>Linear SVD</item>
+        <item>Non Linear DA</item>
+        <item>Particle</item>
+    </string-array>
+</resources>

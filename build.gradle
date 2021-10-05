@@ -1,0 +1,43 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.kotlin_version = "1.4.10"
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+
+        maven { url 'https://jitpack.io' }
+
+        // TODO: Add your Artifactory Credentials here.
+        maven {
+            url "https://nextome.jfrog.io/artifactory/nextome-libs-release-local"
+            credentials {
+                username = "your_username"
+                password = "your_password"
+            }
+        }
+
+        // Include only for Flutter MapView
+        maven {
+            url 'https://storage.googleapis.com/download.flutter.io'
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

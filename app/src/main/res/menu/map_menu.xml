@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Show POI list"
+        android:visible="true"
+        android:id="@+id/poiListButton" />
+
+    <item
+        android:title="Start logging"
+        android:visible="true"
+        android:id="@+id/logStart" />
+
+    <item
+        android:title="Stop and share log"
+        android:visible="false"
+        android:id="@+id/logStop" />
+</menu>
