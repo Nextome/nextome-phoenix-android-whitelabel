@@ -6,6 +6,6 @@ import com.bugsnag.android.Bugsnag
 class PhoenixApplication: Application() {
     override fun onCreate() {
         super.onCreate()
-        Bugsnag.start(this)
+        // Bugsnag.start(this)
     }
 }

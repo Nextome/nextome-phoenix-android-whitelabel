@@ -82,6 +82,7 @@ class MapActivity : AppCompatActivity() {
             nextomeSdk = NextomePhoenixSdk().Builder(applicationContext)
                 .withSecret(secret)
                 .withDeveloperKey(developerKey)
+                .withBundle(bundle)
                 .withForegroundScanPeriod(scanPeriod)
                 .withForegroundBetweenScanPeriod(betweenScanPeriod)
                 .withBackgroundScanPeriod(scanPeriod)
@@ -132,7 +133,7 @@ class MapActivity : AppCompatActivity() {
 
         /**
          * Observe changes in the Nextome SDK state.
-         * Available staates:
+         * Available states:
          * STARTED - Nextome has been correctly initialized and it's ready to scan beacons;
          *
          * SEARCH_VENUE - Nextome is currently scanning nearby beacons to determine in which venue
@@ -152,7 +153,8 @@ class MapActivity : AppCompatActivity() {
          * If the user changes floor, the SDK will resume from FIND_FLOOR state.
          * If the user goes outdoor, the SDK will resume from SEARCH_VENUE state.
          */
-        nextomeSdk.currentState.asLiveData().observe(this, {
+
+        nextomeSdk.stateLiveData.observe(this, {
             if (it.isOutdoor) {
                 showOpenStreetMap()
             } else {
@@ -171,8 +173,8 @@ class MapActivity : AppCompatActivity() {
                     updateState("Showing map...")
 
                     with(it) {
-                        setIndoorMap(mapTilesUrl, mapHeight, mapWidth, poisOfMap)
-                        poiList = allPois
+                        setIndoorMap(mapTilesUrl, mapHeight, mapWidth, venueResources.getPoisByMapId(mapId))
+                        poiList = venueResources.allPois
                     }
 
                     observeMapEvents()
@@ -183,8 +185,9 @@ class MapActivity : AppCompatActivity() {
         })
 
         nextomeSdk.errorObservable.observe(this) {
-            Bugsnag.addMetadata("message", "description", it.customizedMessage)
-            Bugsnag.notify(it.exception)
+            Log.e("MapActivity", it.exception.message ?: "Error")
+            /*Bugsnag.addMetadata("message", "description", it.customizedMessage)
+            Bugsnag.notify(it.exception)*/
         }
 
     }

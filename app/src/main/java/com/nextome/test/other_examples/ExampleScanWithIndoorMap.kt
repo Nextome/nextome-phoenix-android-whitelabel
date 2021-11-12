@@ -54,6 +54,7 @@ class ExampleScanWithIndoorMap : AppCompatActivity() {
             nextomeSdk = NextomePhoenixSdk().Builder(applicationContext)
                     .withSecret(secret)
                     .withDeveloperKey(developerKey)
+                    .withBundle(bundle)
                     .withForegroundScanPeriod(scanPeriod)
                     .withForegroundBetweenScanPeriod(betweenScanPeriod)
                     .withBeaconListMaxSize(beaconListMaxSize)

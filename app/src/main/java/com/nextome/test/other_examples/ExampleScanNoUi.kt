@@ -31,14 +31,15 @@ class ExampleScanNoUi : FragmentActivity() {
         // Initialize Nextome SDK (make sure to use Application context)
         with (settings) {
             nextomeSdk = NextomePhoenixSdk().Builder(applicationContext)
-                    .withSecret(secret)
-                    .withDeveloperKey(developerKey)
-                    .withForegroundScanPeriod(scanPeriod)
-                    .withForegroundBetweenScanPeriod(betweenScanPeriod)
-                    .withBeaconListMaxSize(beaconListMaxSize)
-                    .withLocalizationMethod(localizationMethod)
-                    .withRssiThreshold(rssiThreshold)
-                    .build()
+                .withSecret(secret)
+                .withDeveloperKey(developerKey)
+                .withBundle(bundle)
+                .withForegroundScanPeriod(scanPeriod)
+                .withForegroundBetweenScanPeriod(betweenScanPeriod)
+                .withBeaconListMaxSize(beaconListMaxSize)
+                .withLocalizationMethod(localizationMethod)
+                .withRssiThreshold(rssiThreshold)
+                .build()
         }
 
         // Add other beacon format support
@@ -53,7 +54,7 @@ class ExampleScanNoUi : FragmentActivity() {
 
     private fun startLocalization() {
         nextomeSdk.startForegroundService(300,
-                ForegroundNotificationHelper.createNotification(this))
+            ForegroundNotificationHelper.createNotification(this))
     }
 
     private fun observeResults() {
@@ -64,7 +65,7 @@ class ExampleScanNoUi : FragmentActivity() {
             log( "User Position is ${it.x}, ${it.y}")
         })
 
-        nextomeSdk.currentState.asLiveData().observe(this, Observer {
+        nextomeSdk.stateLiveData.observe(this, {
             with (it) {
 
                 if (it.isOutdoor) {
