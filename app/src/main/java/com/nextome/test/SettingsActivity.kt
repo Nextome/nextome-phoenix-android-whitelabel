@@ -37,6 +37,7 @@ class SettingsActivity : AppCompatActivity() {
         val inputBeaconListMaxSize = inputBeaconListMaxSize.getIntValue()
         val particleActive = activateParticle.isChecked
         val sendPositionToServer = sendToServer.isChecked
+        val sendAssetsToServer = sendAssetsToServer.isChecked
 
         val inputLocalizationMethod = when (localizationSpinner.selectedItemPosition) {
             0 -> NextomeLocalizationMethod.LINEAR_SVD
@@ -48,13 +49,14 @@ class SettingsActivity : AppCompatActivity() {
         with(intent) {
             // Pass scan parameters
             putExtra(INTENT_EXTRA_SETTINGS, NextomeSettings(
-                scanPeriod = inputScanPeriod,
-                betweenScanPeriod = inputBetweenScanPeriod,
-                beaconListMaxSize = inputBeaconListMaxSize,
-                rssiThreshold = inputRssiThreshold,
-                localizationMethod = inputLocalizationMethod,
-                isParticleActive = particleActive,
-                isSendPositionToServerEnabled = sendPositionToServer
+                    scanPeriod = inputScanPeriod,
+                    betweenScanPeriod = inputBetweenScanPeriod,
+                    beaconListMaxSize = inputBeaconListMaxSize,
+                    rssiThreshold = inputRssiThreshold,
+                    localizationMethod = inputLocalizationMethod,
+                    isParticleActive = particleActive,
+                    isSendPositionToServerEnabled = sendPositionToServer,
+                    isSendAssetsToServerEnabled = sendAssetsToServer,
             ))
         }
 
@@ -64,9 +66,9 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun populateLocalizationSpinner() {
         ArrayAdapter.createFromResource(
-            this,
-            R.array.localization_method_array,
-            android.R.layout.simple_spinner_item
+                this,
+                R.array.localization_method_array,
+                android.R.layout.simple_spinner_item
         ).also { adapter ->
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

@@ -93,7 +93,12 @@
             android:layout_height="wrap_content"
             android:checked="false"
             android:text="Send positions to Server"/>
-
+        <CheckBox
+            android:id="@+id/sendAssetsToServer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Send Asset Beacons to Server"/>
         <Button
             android:id="@+id/startScanningButton"
             android:layout_width="wrap_content"

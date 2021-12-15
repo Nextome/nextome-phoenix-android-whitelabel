@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.activity_example_outdoor_mode.*
 import net.nextome.phoenix_sdk.core.helper.NMLogManager
 import net.nextome.phoenix_sdk.facade.NextomePhoenixSdk
 import net.nextome.phoenix_sdk.facade.NextomePhoenixState
+import net.nextome.phoenix_sdk.legacy.nextome.data.models.NMPoi
 import net.nextome.phoenix_sdk.models.NextomePosition
 import net.nextome.phoenix_sdk.models.packages.NextomePoi
 import org.osmdroid.config.Configuration
@@ -92,6 +93,8 @@ class MapActivity : AppCompatActivity() {
                 .withLocalizationMethod(localizationMethod)
                 .withParticleActive(isParticleActive)
                 .withSendPositionToServer(isSendPositionToServerEnabled)
+                .withSendAssetsToServer(isSendAssetsToServerEnabled)
+                .withEventTimeoutDurationInSeconds(10L)
                 .build()
         }
 
@@ -110,7 +113,7 @@ class MapActivity : AppCompatActivity() {
      */
     private fun startLocalization() {
         nextomeSdk.startForegroundService(300,
-            ForegroundNotificationHelper.createNotification(this))
+                ForegroundNotificationHelper.createNotification(this))
 
         initFlutter()
     }
@@ -185,9 +188,19 @@ class MapActivity : AppCompatActivity() {
         })
 
         nextomeSdk.errorObservable.observe(this) {
-            Log.e("MapActivity", it.exception.message ?: "Error")
-            /*Bugsnag.addMetadata("message", "description", it.customizedMessage)
-            Bugsnag.notify(it.exception)*/
+            Bugsnag.addMetadata("message", "description", it.customizedMessage)
+            Bugsnag.notify(it.exception)
+        }
+
+        /**
+         * Observe geofencing with events
+         */
+        nextomeSdk.enterEventObservable.observe(this) { event ->
+            Log.e("event_test", "Received on enter with data: ${event.data}")
+        }
+
+        nextomeSdk.exitEventObservable.observe(this) { event ->
+            Log.e("event_test", "Received on exit with data: ${event.data}")
         }
 
     }
@@ -213,13 +226,13 @@ class MapActivity : AppCompatActivity() {
      */
     fun addExamplePoiOnMap() {
         showPoiOnMap(listOf(
-            NextomePoi().apply {
-                id = 11
-                x = 5800.0
-                y = 4000.1
-                name = "Test poi name"
-                description = "Test Description"
-            }
+                NextomePoi().apply {
+                    id = 11
+                    x = 5800.0
+                    y = 4000.1
+                    name = "Test poi name"
+                    description = "Test Description"
+                }
         ))
     }
 
@@ -237,8 +250,8 @@ class MapActivity : AppCompatActivity() {
                               targetX: Double, targetY: Double, targetMapId: Int) {
 
         val path = nextomeSdk.findPath(
-            startX.toInt(), startY.toInt(), startMapId,
-            targetX.toInt(), targetY.toInt(), targetMapId)
+                startX.toInt(), startY.toInt(), startMapId,
+                targetX.toInt(), targetY.toInt(), targetMapId)
             .filter { it.map == lastPosition.mapId }
 
         channel.invokeMethod("path", FlutterUtils.getPathPayload(path))
@@ -249,8 +262,8 @@ class MapActivity : AppCompatActivity() {
      */
     private fun showPathOnMap(targetX: Double, targetY: Double, targetMapId: Int) {
         val path = nextomeSdk.findPath(
-            lastPosition.x.toInt(), lastPosition.y.toInt(), lastPosition.mapId,
-            targetX.toInt(), targetY.toInt(), targetMapId)
+                lastPosition.x.toInt(), lastPosition.y.toInt(), lastPosition.mapId,
+                targetX.toInt(), targetY.toInt(), targetMapId)
 
         channel.invokeMethod("path", FlutterUtils.getPathPayload(path))
     }
@@ -269,7 +282,7 @@ class MapActivity : AppCompatActivity() {
                     // React here to calculate path click
                     // Build path
                     showPathOnMap(lastPosition.x, lastPosition.y, lastPosition.mapId,
-                        poi.x!!, poi.y!!, poi.map!!)
+                            poi.x!!, poi.y!!, poi.map!!)
 
                     targetPathPoi = poi.asNextomePoi()
                     isShowingPath = true
@@ -314,7 +327,7 @@ class MapActivity : AppCompatActivity() {
 
         // Send local package data to Flutter
         channel.invokeMethod("localPackageUrl",
-            "$mapTilesUrl,$mapHeight,$mapWidth, 3")
+                "$mapTilesUrl,$mapHeight,$mapWidth, 3")
 
         showPoiOnMap(pois)
     }
@@ -322,7 +335,7 @@ class MapActivity : AppCompatActivity() {
     /* Outdoor - Indoor map initialization */
     private fun initOpenStreetMaps() {
         Configuration.getInstance().load(applicationContext,
-            PreferenceManager.getDefaultSharedPreferences(applicationContext))
+                PreferenceManager.getDefaultSharedPreferences(applicationContext))
 
         val gpsLocationProvider = GpsMyLocationProvider(applicationContext).apply {
             locationUpdateMinTime = 1000
@@ -378,36 +391,36 @@ class MapActivity : AppCompatActivity() {
 
         // Start executing Dart code in the FlutterEngine.
         engine.dartExecutor.executeDartEntrypoint(
-            DartExecutor.DartEntrypoint.createDefault()
+                DartExecutor.DartEntrypoint.createDefault()
         )
 
         // Cache the pre-warmed FlutterEngine to be used later by FlutterFragment.
         FlutterEngineCache
-            .getInstance()
-            .put("net.nextome.phoenix", engine)
+                .getInstance()
+                .put("net.nextome.phoenix", engine)
 
         val fragmentManager: FragmentManager = supportFragmentManager
 
         // Attempt to find an existing FlutterFragment, in case this is not the
         // first time that onCreate() was run.
         flutterFragment = fragmentManager
-            .findFragmentByTag(TAG_FLUTTER_FRAGMENT) as FlutterFragment?
+                .findFragmentByTag(TAG_FLUTTER_FRAGMENT) as FlutterFragment?
 
 
         // Create and attach a FlutterFragment if one does not exist.
         if (flutterFragment == null) {
             var newFlutterFragment = FlutterFragment
-                .withCachedEngine("net.nextome.phoenix").build<FlutterFragment>()
+                    .withCachedEngine("net.nextome.phoenix").build<FlutterFragment>()
 
             flutterFragment = newFlutterFragment
 
             fragmentManager
-                .beginTransaction()
-                .add(
-                    R.id.indoor_map,
-                    newFlutterFragment,
-                    TAG_FLUTTER_FRAGMENT
-                ).commit()
+                    .beginTransaction()
+                    .add(
+                            R.id.indoor_map,
+                            newFlutterFragment,
+                            TAG_FLUTTER_FRAGMENT
+                    ).commit()
         }
 
         channel = MethodChannel(engine.dartExecutor, "net.nextome.phoenix")

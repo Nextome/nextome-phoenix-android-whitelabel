@@ -74,9 +74,9 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     private fun checkBluetoothLe() {
         if (!packageManager.hasSystemFeature(
-                PackageManager.FEATURE_BLUETOOTH_LE)) {
+                        PackageManager.FEATURE_BLUETOOTH_LE)) {
             Toast.makeText(this, "BLE is not supported in this device.",
-                Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_SHORT).show()
             finish()
         } else {
             val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_ENABLE_BLUETOOTH && resultCode == Activity.RESULT_CANCELED) {
             Toast.makeText(this, "Please enable bluetooth to use this app.",
-                Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_SHORT).show()
             finish()
         }
 

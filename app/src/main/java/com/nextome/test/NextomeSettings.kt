@@ -17,4 +17,5 @@ data class NextomeSettings(
     val localizationMethod: NextomeLocalizationMethod = NextomeLocalizationMethod.LINEAR_SVD,
     val isParticleActive: Boolean = true,
     val isSendPositionToServerEnabled: Boolean = false,
+    val isSendAssetsToServerEnabled: Boolean = false,
 ): Parcelable
