@@ -12,8 +12,8 @@ android {
         applicationId "com.nextome.test"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 66
-        versionName "2.0.4"
+        versionCode 67
+        versionName "2.1.0"
 
         testInstrumentationRunner "androidx.com.nextome.test.runner.AndroidJUnitRunner"
     }
@@ -51,7 +51,7 @@ dependencies {
     implementation('net.nextome.phoenix_sdk:phoenix-sdk:0.4.0')
 
     // Include only for Flutter MapView
-    implementation('net.nextome.nextome_map_module:flutter_release:1.1.0')
+    implementation('net.nextome.nextome_map_module:flutter_release:1.2.0')
 
     // Include only for Outdoor map
     implementation 'org.osmdroid:osmdroid-android:6.1.8'
