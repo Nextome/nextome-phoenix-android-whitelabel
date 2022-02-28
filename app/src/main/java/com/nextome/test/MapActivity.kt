@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
@@ -189,8 +190,12 @@ class MapActivity : AppCompatActivity() {
         })
 
         nextomeSdk.errorObservable.observe(this) {
+            Toast.makeText(this,  it.exception.localizedMessage ?: "Error", Toast.LENGTH_LONG).show()
+
+            /**
             Bugsnag.addMetadata("message", "description", it.customizedMessage)
             Bugsnag.notify(it.exception)
+            **/
         }
 
         /**
@@ -288,7 +293,8 @@ class MapActivity : AppCompatActivity() {
                     targetPathPoi = poi.asNextomePoi()
                     isShowingPath = true
                 } catch (e: Exception) {
-                    Bugsnag.notify(e)
+                    Toast.makeText(this, e.localizedMessage ?: "Error", Toast.LENGTH_LONG).show()
+                    // Bugsnag.notify(e)
                 }
             }
         }
