@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        app:titleTextColor="@color/white"
+        app:title="@string/title_venue_map"
+        app:menu="@menu/map_menu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        android:theme="@style/NextomeToolbarTheme" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <org.osmdroid.views.MapView
+            android:id="@+id/outdoor_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <com.nextome.phoenix_map_utils.PhoenixMapView
+            android:id="@+id/indoor_map"
+            android:forceHasOverlappingRendering="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="right">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/exitNavigation"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/colorAccent"
+                android:elevation="2dp"
+                app:elevation="2dp"
+                android:visibility="gone"
+                android:textAllCaps="true"
+                android:text="@string/exit_navigation"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/stopButton"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="#f44336"
+                android:textAllCaps="true"
+                android:text="@string/stop"/>
+
+        </LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/stateCard"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="64dp"
+            android:layout_marginLeft="64dp"
+            android:padding="-8dp"
+            android:layout_height="128dp"
+            app:cardPreventCornerOverlap="false">
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+
+            <TextView
+                android:id="@+id/stateView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/beacons_empty"/>
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</LinearLayout>

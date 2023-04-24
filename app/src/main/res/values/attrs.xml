@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NMSettingEditTextView">
+        <attr name="labelName" format="string" />
+        <attr name="negativeInt" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="NMSettingAutocompleteTextView">
+        <attr name="autocompleteLabelName" format="string" />
+    </declare-styleable>
+    <declare-styleable name="NMSettingCheckboxView">
+        <attr name="checkboxLabel" format="string" />
+        <attr name="checkBoxDefaultValue" format="boolean" />
+    </declare-styleable>
+</resources>

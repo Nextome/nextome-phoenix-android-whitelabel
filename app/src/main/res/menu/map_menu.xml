@@ -6,12 +6,7 @@
         android:id="@+id/poiListButton" />
 
     <item
-        android:title="Start logging"
+        android:title="Show Settings"
         android:visible="true"
-        android:id="@+id/logStart" />
-
-    <item
-        android:title="Stop and share log"
-        android:visible="false"
-        android:id="@+id/logStop" />
+        android:id="@+id/menuSettingsButton" />
 </menu>

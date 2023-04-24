@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/nmSettingsSwitchLabel"
+        android:layout_marginStart="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/tab_indicator_text"
+        android:text="@string/settings_debugMode" />
+
+    <ImageView
+        android:id="@+id/nmSettingsSwitchUpdatedImage"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_marginStart="8dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_circle_shape"
+        app:layout_constraintBottom_toBottomOf="@+id/nmSettingLabel"
+        app:layout_constraintStart_toEndOf="@+id/nmSettingLabel"
+        app:layout_constraintTop_toTopOf="@+id/nmSettingLabel" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/nmSettingsSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/NextomeSwitch"
+        android:text="" />
+</LinearLayout>

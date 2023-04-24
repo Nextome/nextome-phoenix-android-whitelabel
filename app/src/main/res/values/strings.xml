@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Nextome Phoenix TestApp</string>
+    <string name="app_name">Nextome SDK Test App</string>
     <string name="scan_period">Scan period</string>
     <string name="between_scan_period">Between Scan Period</string>
     <string name="beacon_list_max_size">Beacon list max size</string>
@@ -7,11 +7,43 @@
     <string name="beacons_empty">Scanning in progress…</string>
     <string name="beacon_rssi_threshold">RSSI Threshold</string>
     <string name="permission_denied_rationale">Please accept permissions to use Nextome Test app</string>
+    <string name="bluetooth_off">Please enable bluetooth to use the app</string>
     <string name="permission_background_denied_rationale">Nextome Test App will NOT work in background</string>
     <string name="permission_request_title">Location in background required</string>
     <string name="permission_ok">Ok</string>
     <string name="permission_request_background">Allow access to position in background</string>
     <string name="permission_request">Allow permission for location and storage.</string>
+    <string name="start">Start Nextome</string>
+    <string name="no_network">No network available, please try later.</string>
+    <string name="loading">Loading...</string>
+    <string name="service_running">Nextome service is already running. Attaching to the old service.</string>
+    <string name="service_running_replace">Replace</string>
+    <string name="service_running_keep">Attach to old</string>
+    <string name="stop">stop</string>
+    <string name="exit_navigation">Exit navigation</string>
+    <string name="service_not_running">Nextome service has been terminated. Select Ok to exit the app.</string>
+    <string name="error_ble_not_supported">BLE is not supported in this device.</string>
+    <string name="battery_opt_title">Battery optimization enabled</string>
+    <string name="battery_opt_desc">If you need to collect positions in background, disable battery optimisations in the next screen to make sure Nextome always runs.</string>
+    <string name="generic_no">No</string>
+    <string name="generic_doNotAskAgain">Don\'t ask again</string>
+    <string name="event_timeout">Time out for events (millis)</string>
+    <string name="filter_rilevations">Filter for rilevations</string>
+    <string name="filter_positions">Filter for positions</string>
+    <string name="send_asset_beacons">Send asset beacon to server</string>
+    <string name="send_positions">Send position to server</string>
+    <string name="save">Save</string>
+    <string name="restore">Restore</string>
+    <string name="generic_yes">Yes</string>
+    <string name="generic_default">DEFAULT</string>
+    <string name="settings_title">Advanced settings</string>
+    <string name="title_venue_map">Venue map</string>
+    <string name="settings_tip">Modify only in accordance with the Nextome team</string>
+    <string name="settings_tip_readonly">To edit, go back to login screen</string>
+    <string name="title_poi_list">POI list</string>
+    <string name="settings_debugMode">Debug mode</string>
+    <string name="settings_appSection">App settings</string>
+
     <string-array name="localization_method_array">
         <item>Linear SVD</item>
         <item>Non Linear DA</item>

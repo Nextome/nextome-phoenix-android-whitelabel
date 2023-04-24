@@ -1,110 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:nm="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context="com.nextome.test.MainActivity">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <TextView
+            android:id="@+id/tipTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:padding="12dp"
+            android:text="@string/settings_tip"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-            <EditText
-                android:id="@+id/inputScanPeriod"
+        <LinearLayout
+            android:id="@+id/algorithmLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ic_layout_border"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tipTextView">
+
+            <com.nextome.test.view.NMSettingTextView
+                android:id="@+id/scanPeriodSetting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:text="1000"
-                android:hint="@string/scan_period" />
+                nm:labelName="@string/scan_period"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/inputBetweenScanPeriod"
+            <com.nextome.test.view.NMSettingTextView
+                android:id="@+id/betweenScanPeriodSetting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:text="250"
-                android:hint="@string/between_scan_period" />
+                nm:labelName="@string/between_scan_period"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/inputBeaconListMaxSize"
+            <com.nextome.test.view.NMSettingTextView
+                android:id="@+id/beaconListMaxSizeSetting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="@string/beacon_list_max_size"
-                android:text="12" />
+                nm:labelName="@string/beacon_list_max_size"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/inputRssiThreshold"
+            <com.nextome.test.view.NMSettingTextView
+                android:id="@+id/rssiSetting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="@string/beacon_rssi_threshold"
-                android:text="-75" />
+                nm:negativeInt="true"
+                nm:labelName="@string/beacon_rssi_threshold"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.nextome.test.view.NMSettingTextView
+                android:id="@+id/event_timeout_setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                nm:labelName="@string/event_timeout"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/functionalityLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ic_layout_border"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/algorithmLayout">
+
+            <com.nextome.test.view.NMSettingAutocompleteTextView
+                android:id="@+id/sendAssetsSetting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                nm:autocompleteLabelName="@string/send_asset_beacons"/>
+
+            <com.nextome.test.view.NMSettingAutocompleteTextView
+                android:id="@+id/sendPositionsSetting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                nm:autocompleteLabelName="@string/send_positions"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/appFunctionalityLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ic_layout_border"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/functionalityLayout">
+
+            <com.nextome.test.view.NMSettingsCheckboxView
+                android:id="@+id/debugMode"
+                nm:checkboxLabel="@string/settings_debugMode"
+                nm:checkBoxDefaultValue="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Localization method"/>
-
-        <Spinner
-            android:id="@+id/localizationSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            />
-
-        <CheckBox
-            android:id="@+id/activateParticle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Activate Particle Filtering"/>
-
-        <CheckBox
-            android:id="@+id/sendToServer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="Send positions to Server"/>
-        <CheckBox
-            android:id="@+id/sendAssetsToServer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="Send Asset Beacons to Server"/>
-        <Button
-            android:id="@+id/startScanningButton"
+            android:layout_marginStart="24dp"
+            android:background="@color/white"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="@string/settings_appSection"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/appFunctionalityLayout"
+            app:layout_constraintStart_toStartOf="@+id/appFunctionalityLayout"
+            app:layout_constraintTop_toTopOf="@+id/appFunctionalityLayout" />
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Start Scanning" />
-    </LinearLayout>
+            android:layout_marginStart="24dp"
+            android:background="@color/white"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="Algorithm parameters"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/algorithmLayout"
+            app:layout_constraintStart_toStartOf="@+id/algorithmLayout"
+            app:layout_constraintTop_toTopOf="@+id/algorithmLayout" />
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:background="@color/white"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="Algorithm parameters"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/algorithmLayout"
+            app:layout_constraintStart_toStartOf="@+id/algorithmLayout"
+            app:layout_constraintTop_toTopOf="@+id/algorithmLayout" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:background="@color/white"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="Additional features"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/functionalityLayout"
+            app:layout_constraintStart_toStartOf="@+id/functionalityLayout"
+            app:layout_constraintTop_toTopOf="@+id/functionalityLayout" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/saveButton"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/save"
+            android:textAllCaps="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/restoreButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appFunctionalityLayout" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/restoreButton"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/restore"
+            android:textAllCaps="true"
+            android:textColor="@color/blu_inactive"
+            app:layout_constraintBottom_toBottomOf="@+id/saveButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/saveButton"
+            app:layout_constraintTop_toTopOf="@+id/saveButton"
+            app:strokeColor="@color/white" />
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            app:titleTextColor="@color/white"
+            app:title="@string/settings_title"
+            app:navigationIcon="@drawable/baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

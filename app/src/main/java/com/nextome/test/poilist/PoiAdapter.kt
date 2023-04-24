@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.nextome.test.R
-import kotlinx.android.synthetic.main.item_poi.view.*
-import net.nextome.phoenix_sdk.models.packages.NextomePoi
+import net.nextome.phoenix.models.packages.NextomePoi
 
 class PoiAdapter(
-    private val poiList: List<NextomePoi>,
+    var poiList: List<NextomePoi>,
     private val onPoiClicked: (poi: NextomePoi) -> Unit
 ): RecyclerView.Adapter<PoiAdapter.ViewHolder>() {
 
