@@ -6,10 +6,10 @@ Official integration docs are available [here](https://docs.nextome.dev/).
 
 ## Set up your environment
 To use Nextome SDK with your licence:
- 1. Provide your Artifactory credentials in `build.gradle` to download the SDK:
+ 1. Provide your Artifactory credentials in `settings.gradle.kts` to download the SDK:
 ```groovy
     maven {
-        url "https://nextome.jfrog.io/artifactory/nextome-libs-release-local"
+        url = uri("https://nextome.jfrog.io/artifactory/nextome-libs-prod/")
         credentials {
             username = "your_username"
             password = "your_password"
@@ -17,12 +17,12 @@ To use Nextome SDK with your licence:
     }
 ```
 
- 2. Add your SDK `secret` and `developerKey` in `NextomeSettings.kt`:
+ 2. Add your SDK `clientId` and `clientSecret` in `NextomeCredentials.kt`:
 ```kotlin
-data class NextomeSettings(
-    val secret: String = "secret_here",
-    val developerKey: String = "developer_key_here",
-    ...
+object NextomeCredentials {
+    const val clientId = "client_id"
+    const val clientSecret = "client_secret"
+}
 ```
 
 A working example of this project is available on [Google Play here](https://play.google.com/store/apps/details?id=com.nextome.test). 
