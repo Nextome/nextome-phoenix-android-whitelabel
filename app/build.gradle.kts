@@ -54,8 +54,8 @@ val koinVersion = "3.4.0"
 
 dependencies {
 
-    implementation("net.nextome.phoenix:sdk:2.0.0-rc01")
-    implementation("com.nextome.phoenix_map_utils:phoenix_map_utils:1.4.3")
+    implementation("net.nextome.phoenix:sdk:2.0.0-rc03")
+    implementation("com.nextome.phoenix_map_utils:phoenix_map_utils:1.4.3.2")
     implementation("net.nextome.nextome_map_module:flutter:1.4.3")
 
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0")
