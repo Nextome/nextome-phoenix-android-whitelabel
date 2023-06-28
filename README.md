@@ -9,7 +9,7 @@ To use Nextome SDK with your licence:
  1. Provide your Artifactory credentials in `settings.gradle.kts` to download the SDK:
 ```groovy
     maven {
-        url = uri("https://nextome.jfrog.io/artifactory/nextome-libs-prod/")
+        url = uri("https://packages.nextome.dev/artifactory/nextome-libs-prod/")
         credentials {
             username = "your_username"
             password = "your_password"

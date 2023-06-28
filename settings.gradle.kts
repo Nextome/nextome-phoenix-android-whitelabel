@@ -13,7 +13,7 @@ dependencyResolutionManagement {
 
         maven {
             name = "artifactory"
-            url = uri("https://nextome.jfrog.io/artifactory/nextome-libs-prod/")
+            url = uri("https://packages.nextome.dev/artifactory/nextome-libs-prod/")
             // TODO: Add your Nextome Repository credentials here
             credentials {
                 username = "username"
