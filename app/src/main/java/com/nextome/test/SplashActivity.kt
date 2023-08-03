@@ -151,13 +151,18 @@ class SplashActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks 
         }
     }
 
+    @AfterPermissionGranted(PERMISSIONS_REQUEST_CODE)
     private fun checkPermissions() {
-        val permissionsToAsk = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            PERMISSIONS + PERMISSION_BACKGROUND
-        } else { PERMISSIONS }
-
-        if (!EasyPermissions.hasPermissions(this, *permissionsToAsk)) {
+        if (!EasyPermissions.hasPermissions(this, *PERMISSIONS)) {
             showPermissionRationale()
+        } else {
+            // Has normal permissions
+            // now check for background
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (!EasyPermissions.hasPermissions(this, PERMISSION_BACKGROUND)) {
+                    showBackgroundPermissionRationale()
+                }
+            }
         }
     }
 
@@ -192,6 +197,18 @@ class SplashActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks 
         return true
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun showBackgroundPermissionRationale() {
+        if (!EasyPermissions.hasPermissions(this, PERMISSION_BACKGROUND)) {
+            EasyPermissions.requestPermissions(
+                host = this,
+                rationale = getString(R.string.permission_request_background),
+                requestCode = PERMISSIONS_BACKGROUND_REQUEST_CODE,
+                perms = arrayOf(PERMISSION_BACKGROUND)
+            )
+        }
+    }
+
     private fun showPermissionRationale() {
         val builder = MaterialAlertDialogBuilder(this)
 
@@ -206,17 +223,6 @@ class SplashActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks 
                     requestCode = PERMISSIONS_REQUEST_CODE,
                     perms = PERMISSIONS
                 )
-
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    if (!EasyPermissions.hasPermissions(this, PERMISSION_BACKGROUND)) {
-                        EasyPermissions.requestPermissions(
-                            host = this,
-                            rationale = getString(R.string.permission_request_background),
-                            requestCode = PERMISSIONS_REQUEST_CODE,
-                            perms = arrayOf(PERMISSION_BACKGROUND)
-                        )
-                    }
-                }
             }
 
         builder.create().show()
