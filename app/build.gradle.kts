@@ -56,7 +56,7 @@ dependencies {
 
     implementation("net.nextome.phoenix:sdk:2.0.0-rc03")
     implementation("com.nextome.phoenix_map_utils:phoenix_map_utils:1.4.3.2")
-    implementation("net.nextome.nextome_map_module:flutter:1.4.3")
+    implementation("net.nextome.nextome_map_module:flutter:1.5.1")
 
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0")
     implementation ("androidx.activity:activity-ktx:1.6.1")
