@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.nextome.test"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.nextome.test"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -54,10 +54,9 @@ val koinVersion = "3.4.0"
 
 dependencies {
 
-    implementation("net.nextome.phoenix:sdk:2.0.0-rc03")
-    implementation("com.nextome.phoenix_map_utils:phoenix_map_utils:1.4.3.2")
+    implementation("com.nextome.localization:nextome_localization:3.0.0-rc02")
+    implementation("com.nextome.localization_map_utils:nextome_localization_map_utils:1.5.1.1")
     implementation("net.nextome.nextome_map_module:flutter:1.5.1")
-
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0")
     implementation ("androidx.activity:activity-ktx:1.6.1")
     implementation ("androidx.fragment:fragment-ktx:1.5.4")

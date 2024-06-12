@@ -20,10 +20,16 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.nextome.phoenix_map_utils.PhoenixMapHandler
-import net.nextome.phoenix.models.NextomePosition
-import net.nextome.phoenix.models.packages.NextomeEvent
-import net.nextome.phoenix.models.packages.NextomePoi
+import com.nextome.localization.facade.state.FindFloorState
+import com.nextome.localization.facade.state.GetPacketState
+import com.nextome.localization.facade.state.IdleState
+import com.nextome.localization.facade.state.LocalizationRunningState
+import com.nextome.localization.facade.state.SearchVenueState
+import com.nextome.localization.facade.state.StartedState
+import com.nextome.nextome_localization_map_utils.NextomeLocalizationMapHandler
+import com.nextome.nxt_data.data.NextomeEvent
+import com.nextome.nxt_data.data.NextomePoi
+import com.nextome.nxt_data.data.NextomePosition
 import com.nextome.test.R
 import com.nextome.test.SplashActivity
 import com.nextome.test.data.NextomeSdkCredentials
@@ -33,12 +39,6 @@ import com.nextome.test.poilist.PoiListContract
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import net.nextome.phoenix.facade.state.FindFloorState
-import net.nextome.phoenix.facade.state.GetPacketState
-import net.nextome.phoenix.facade.state.IdleState
-import net.nextome.phoenix.facade.state.LocalizationRunningState
-import net.nextome.phoenix.facade.state.SearchVenueState
-import net.nextome.phoenix.facade.state.StartedState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -321,7 +321,7 @@ class MapActivity : AppCompatActivity() {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.flutterUtils.observeEvents().collect { event ->
                         when (event) {
-                            is PhoenixMapHandler.OnNavigationSelected -> {
+                            is NextomeLocalizationMapHandler.OnNavigationSelected -> {
 
                                 // React here to calculate path click
                                 // Build path

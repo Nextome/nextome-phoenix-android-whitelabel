@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import net.nextome.phoenix.models.packages.NextomeSettings
+import com.nextome.nxt_data.data.NextomeSettings
 import com.nextome.test.R
 import com.nextome.test.databinding.ActivitySettingsBinding
 import com.nextome.test.helper.NmSerialization.asJson

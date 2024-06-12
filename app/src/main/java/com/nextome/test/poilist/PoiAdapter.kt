@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.nextome.nxt_data.data.NextomePoi
 import com.nextome.test.R
-import net.nextome.phoenix.models.packages.NextomePoi
 
 class PoiAdapter(
     var poiList: List<NextomePoi>,

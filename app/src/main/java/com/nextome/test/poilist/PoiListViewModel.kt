@@ -1,7 +1,7 @@
 package com.nextome.test.poilist
 
 import androidx.lifecycle.ViewModel
-import net.nextome.phoenix.models.packages.NextomePoi
+import com.nextome.nxt_data.data.NextomePoi
 
 class PoiListViewModel: ViewModel() {
     private var poiList = listOf<NextomePoi>()

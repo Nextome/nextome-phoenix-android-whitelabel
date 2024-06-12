@@ -3,7 +3,7 @@ package com.nextome.test.poilist
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
-import net.nextome.phoenix.models.packages.NextomePoi
+import com.nextome.nxt_data.data.NextomePoi
 import com.nextome.test.helper.NmSerialization.asJson
 import com.nextome.test.helper.NmSerialization.fromJson
 

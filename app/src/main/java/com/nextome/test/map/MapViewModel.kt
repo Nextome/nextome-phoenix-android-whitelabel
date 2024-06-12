@@ -7,11 +7,16 @@ import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nextome.phoenix_map_utils.PhoenixMapHandler
-import net.nextome.phoenix.NextomePhoenixSdk
-import net.nextome.phoenix.background.NMNotification
-import net.nextome.phoenix.models.NextomeException
-import net.nextome.phoenix.models.packages.NextomeSettings
+import com.nextome.localization.NextomePhoenixSdk
+import com.nextome.localization.background.NMNotification
+import com.nextome.nextome_localization_map_utils.NextomeLocalizationMapHandler
+import com.nextome.nxt_data.data.CriticalException
+import com.nextome.nxt_data.data.GenericException
+import com.nextome.nxt_data.data.InvalidCredentialException
+import com.nextome.nxt_data.data.NextomeException
+import com.nextome.nxt_data.data.NextomePoi
+import com.nextome.nxt_data.data.NextomePosition
+import com.nextome.nxt_data.data.NextomeSettings
 import com.nextome.test.R
 import com.nextome.test.data.NextomeSdkCredentials
 import com.nextome.test.helper.NmSerialization.fromJson
@@ -22,9 +27,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
-import net.nextome.phoenix.models.NextomePosition
-import net.nextome.phoenix.models.packages.NextomePoi
-
 class MapViewModel(
     private val settingsRepository: SettingsRepository,
     private val context: Application,
@@ -47,7 +49,7 @@ class MapViewModel(
     // In this case, we need to update the path each time the user moves
     var isShowingPath = false
     var targetPathPoi: NextomePoi? = null
-    val flutterUtils = PhoenixMapHandler()
+    val flutterUtils = NextomeLocalizationMapHandler()
 
     fun initWithIntent(intent: Intent) {
         viewModelScope.launch {
@@ -121,18 +123,18 @@ class MapViewModel(
 
     fun handleError(error: NextomeException) {
         when (error) {
-            is NextomeException.GenericException -> {
+            is GenericException -> {
                 if(settings?.isDebugModeEnabled == true){
                     _uiEvents.value = ShowMessageEvent(message = error.message)
                 }
             }
 
-            is NextomeException.InvalidCredentialException -> {
+            is InvalidCredentialException -> {
                 _uiEvents.value = ShowMessageEvent(message = error.message)
                 _uiEvents.value = CloseActivityEvent
             }
 
-            is NextomeException.CriticalException -> {
+            is CriticalException -> {
                 _uiEvents.value = ShowMessageEvent(message = error.message)
             }
         }
