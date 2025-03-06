@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nextome.localization.NextomePhoenixSdk
+import com.nextome.localization.NextomeLocalizationSdk
 import com.nextome.localization.background.NMNotification
 import com.nextome.nextome_localization_map_utils.NextomeLocalizationMapHandler
 import com.nextome.nxt_data.data.CriticalException
@@ -35,7 +35,7 @@ class MapViewModel(
     val uiEvents = _uiEvents.filterNotNull()
 
     lateinit var sdkCredentials: NextomeSdkCredentials
-    lateinit var nextomeSdk: NextomePhoenixSdk
+    lateinit var nextomeSdk: NextomeLocalizationSdk
 
     val settings by lazy { settingsRepository.getUserSettings() }
 
@@ -57,7 +57,7 @@ class MapViewModel(
             parseCredentialsFromIntent(intent)
             initNextomeSdk(settings)
 
-            if (NextomePhoenixSdk.isRunning()) {
+            if (NextomeLocalizationSdk.isRunning()) {
                 _uiEvents.value = ShowMessageEvent(
                     context.getString(R.string.service_running)
                 )
@@ -69,7 +69,7 @@ class MapViewModel(
 
     private fun ensureNextomeIsRunning() {
         viewModelScope.launch {
-            NextomePhoenixSdk.isBackgroundServiceRunningObservable(context).collectLatest { running ->
+            NextomeLocalizationSdk.isBackgroundServiceRunningObservable(context).collectLatest { running ->
                 _uiEvents.value = NextomeServiceNotRunningDialog(running.not())
             }
         }
@@ -79,7 +79,7 @@ class MapViewModel(
         val nextomeOverriddenSettings = settings ?: AppOverriddenSettings()
 
         // Initialize Nextome SDK (make sure to use Application context)
-        nextomeSdk = NextomePhoenixSdk(
+        nextomeSdk = NextomeLocalizationSdk(
             clientId = sdkCredentials.clientId,
             clientSecret = sdkCredentials.clientSecret,
             scanPeriod = nextomeOverriddenSettings.scanPeriod,
