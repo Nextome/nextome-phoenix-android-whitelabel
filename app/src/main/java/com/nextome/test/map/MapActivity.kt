@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.asLiveData
@@ -26,7 +27,6 @@ import com.nextome.localization.facade.state.IdleState
 import com.nextome.localization.facade.state.LocalizationRunningState
 import com.nextome.localization.facade.state.SearchVenueState
 import com.nextome.localization.facade.state.StartedState
-import com.nextome.nextome_localization_map_utils.NextomeLocalizationMapHandler
 import com.nextome.nxt_data.data.NextomeEvent
 import com.nextome.nxt_data.data.NextomePoi
 import com.nextome.nxt_data.data.NextomePosition
@@ -37,6 +37,7 @@ import com.nextome.test.databinding.ActivityMapBinding
 import com.nextome.test.helper.NmSerialization.asJson
 import com.nextome.test.poilist.PoiListContract
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -65,6 +66,8 @@ class MapActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMapBinding
 
+    private var mapFragment: Fragment? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -77,7 +80,6 @@ class MapActivity : AppCompatActivity() {
 
         initOpenStreetMaps()
 
-        initFlutter()
         observeSdkResults()
         reactToEvents()
 
@@ -189,11 +191,12 @@ class MapActivity : AppCompatActivity() {
                     updateState("Showing map of floor ${state.mapId}...")
                     showIndoorMap()
 
-                    setMapViewSettings()
-                    setIndoorMap(state.tilesZipPath,
+                    initMapFragment()
+                    setIndoorMap(
+                        state.mapId,
+                        state.tilesZipPath,
                         state.mapHeight,
-                        state.mapWidth,
-                        state.venueData.getPoisByMapId(state.mapId)
+                        state.mapWidth
                     )
 
                     viewModel.poiList = state.venueData.allPois
@@ -272,7 +275,7 @@ class MapActivity : AppCompatActivity() {
      * Flutter Map will automatically be updated with the user new location.
      */
     private fun updatePositionOnFlutterMap(it: NextomePosition) {
-        viewModel.flutterUtils.updatePositionOnMap(it)
+        viewModel.mapManager.updateBlueDotMarker(it, callApply = true)
 
         if (viewModel.isShowingPath) {
             viewModel.targetPathPoi?.let { poi ->
@@ -298,7 +301,7 @@ class MapActivity : AppCompatActivity() {
 
             runOnUiThread {
                 binding.exitNavigation.visibility = View.VISIBLE
-                viewModel.flutterUtils.updatePath(path)
+                viewModel.mapManager.drawPath(path, callApply = true)
             }
         }
     }
@@ -307,7 +310,7 @@ class MapActivity : AppCompatActivity() {
         binding.exitNavigation.visibility = View.GONE
 
         runOnUiThread {
-            viewModel.flutterUtils.clearPath()
+            viewModel.mapManager.clearPathAndMarker(callApply = true)
         }
     }
 
@@ -315,41 +318,32 @@ class MapActivity : AppCompatActivity() {
      * Callback for events happening on the Flutter map.
      */
     private var mapEventsJob: Job? = null
+
     private fun observeFlutterMapEvents() {
         if (mapEventsJob == null) {
             mapEventsJob = lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.flutterUtils.observeEvents().collect { event ->
-                        when (event) {
-                            is NextomeLocalizationMapHandler.OnNavigationSelected -> {
 
-                                // React here to calculate path click
-                                // Build path
-                                viewModel.lastPosition?.let { position ->
-                                    showPathOnMap(
-                                        position.venueId,
-                                        position.x, position.y, position.mapId,
-                                        event.poi.x, event.poi.y, event.poi.map
-                                    )
 
-                                    viewModel.targetPathPoi = event.poi
-                                    viewModel.isShowingPath = true
-                                }
+                    viewModel.mapManager.flutterMap.setOnMarkerTap { marker ->
+                        viewModel.lastPosition?.let { position ->
+
+                            var poi: NextomePoi? = viewModel.getNextomePoiFromMapMarker(marker)
+                            poi?.let {
+                                showPathOnMap(
+                                    position.venueId,
+                                    position.x, position.y, position.mapId,
+                                    poi!!.x, poi!!.y, poi!!.map
+                                )
+
+                                viewModel.targetPathPoi = poi!!
+                                viewModel.isShowingPath = true
                             }
-
-                            else -> {}
                         }
                     }
                 }
             }
         }
-    }
-
-    private fun setMapViewSettings() {
-        viewModel.flutterUtils.setMapViewSettings(
-            fabEnabled = true,
-            customPositionResourceUrl = null
-        )
     }
 
     /**
@@ -359,9 +353,17 @@ class MapActivity : AppCompatActivity() {
      * mapTilesUrl and map sizes will be available in the observer's
      * NextomeLocalizationState object
      */
-    private fun setIndoorMap(mapTilesUrl: String, mapHeight: Int, mapWidth: Int, pois: List<NextomePoi>) {
-        viewModel.flutterUtils.setMap(mapTilesUrl = mapTilesUrl, mapHeight = mapHeight, mapWidth = mapWidth)
-        viewModel.flutterUtils.updatePoiList(pois)
+    private fun setIndoorMap(mapId: Int, mapTilesUrl: String, mapHeight: Int, mapWidth: Int) {
+        lifecycleScope.launch {
+            // Devo aspettare qualche istante dopo l'inizializzazione di flutter, altrimenti carica flutter ma non vedo niente.
+            delay(1000)
+            viewModel.mapManager.loadIndoorMapTiles(
+                mapId,
+                mapTilesUrl,
+                mapHeight,
+                mapWidth
+            )
+        }
     }
 
     /* Outdoor - Indoor map initialization */
@@ -406,23 +408,54 @@ class MapActivity : AppCompatActivity() {
     private fun showOpenStreetMap() {
         findViewById<MapView>(R.id.outdoor_map).visibility = View.VISIBLE
         findViewById<FrameLayout>(R.id.indoor_map).visibility = View.GONE
-
         findViewById<CardView>(R.id.stateCard).visibility = View.VISIBLE
+        destroyMapFragment()
     }
 
     private fun updateState(message: String) { findViewById<TextView>(R.id.stateView).text = message }
 
 
     /**
-     * Inits a flutter fragment
+     * Inits the map fragment
      */
-    private fun initFlutter() {
+    private fun initMapFragment() {
+
+        if(mapFragment != null){
+            return
+        }
+
         val fragmentManager: FragmentManager = supportFragmentManager
-        viewModel.flutterUtils.initialize(
+        viewModel.mapManager.flutterMap.initialize(
             fragmentManager = fragmentManager,
             viewId = R.id.indoor_map,
             context = this
         )
+
+        // Important to avoid MissingPluginException(No implementation found for method method_name on channel com.nextome.nextomemapview)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.mapManager.flutterMap.observeEvents().collect {
+                    // do nothing. Just initialize the observer
+                }
+            }
+        }
+
+        // Called when all resources are loaded
+        viewModel.mapManager.flutterMap.setOnMapReady {
+            viewModel.mapManager.setIndoorMapItems(application)
+            viewModel.mapManager.buildPois(viewModel.poiList)
+        }
+    }
+
+    /**
+     * Destroy the map fragment
+     * */
+    private fun destroyMapFragment() {
+        if(mapFragment != null) {
+            supportFragmentManager.beginTransaction().remove(mapFragment!!).commit()
+            mapFragment = null
+        }
+        viewModel.mapManager.flutterMapReady = false
     }
 
     /**
