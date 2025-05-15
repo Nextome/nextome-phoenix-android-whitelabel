@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nextome.localization.NextomeLocalizationSdk
 import com.nextome.localization.background.NMNotification
-import com.nextome.nextome_localization_map_utils.NextomeLocalizationMapHandler
+import com.nextome.nextomemapview.models.NMMarker
 import com.nextome.nxt_data.data.CriticalException
 import com.nextome.nxt_data.data.GenericException
 import com.nextome.nxt_data.data.InvalidCredentialException
@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
+
 class MapViewModel(
     private val settingsRepository: SettingsRepository,
     private val context: Application,
@@ -49,7 +50,8 @@ class MapViewModel(
     // In this case, we need to update the path each time the user moves
     var isShowingPath = false
     var targetPathPoi: NextomePoi? = null
-    val flutterUtils = NextomeLocalizationMapHandler()
+
+    val mapManager = IndoorMapManager()
 
     fun initWithIntent(intent: Intent) {
         viewModelScope.launch {
@@ -167,6 +169,25 @@ class MapViewModel(
         hiddenEventAlerts.add(eventId)
     }
 
+    /**
+     * Helper function to match an NMarkr input, to NextomePoi stored in MapViewModel.poiList
+     * */
+    fun getNextomePoiFromMapMarker(marker: NMMarker): NextomePoi? {
+
+        if(marker.id != null && marker.id!!.startsWith("poi_")){
+            var idStr = marker.id!!.substring("poi_".length)
+            try {
+                var id = idStr.toInt()
+                var res = poiList.filter { it.id == id}
+                return if(res.isEmpty()) return null else res[0]
+            }catch (e: Exception){
+                return null
+            }
+        }
+
+        return null
+    }
+    
     sealed class UiEvent
     object CloseActivityEvent: UiEvent()
     data class NextomeServiceNotRunningDialog(val show: Boolean): UiEvent()
