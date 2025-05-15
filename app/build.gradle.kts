@@ -57,8 +57,6 @@ dependencies {
     implementation("com.nextome.localization:nextome_localization:3.0.2")
     implementation("com.nextome.nextomemapview:nextomemapview:2.0.21.0")
     implementation("net.nextome.nextome_map_module:flutter:2.0.23")
-    // implementation("com.nextome.localization_map_utils:nextome_localization_map_utils:1.5.1.1")
-    // implementation("net.nextome.nextome_map_module:flutter:1.5.1")
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0")
     implementation ("androidx.activity:activity-ktx:1.6.1")
     implementation ("androidx.fragment:fragment-ktx:1.5.4")
