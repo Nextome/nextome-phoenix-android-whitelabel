@@ -151,7 +151,9 @@ class MapViewModel(
         viewModelScope.launch {
             val venueId = currentVenueId
             val venueDefaultSettings: NextomeSettings? = if (venueId != null) {
-                nextomeSdk.getVenueData(venueId).settings
+                nextomeSdk.getVenueData(venueId) {
+                    // Take download progress here
+                }.settings
             } else { null }
 
             context.startActivity(SettingsActivity.getIntent(venueDefaultSettings,
@@ -160,12 +162,12 @@ class MapViewModel(
         }
     }
 
-    private val hiddenEventAlerts = arrayListOf<Long>()
-    fun shouldShowEventAlert(eventId: Long): Boolean {
+    private val hiddenEventAlerts = arrayListOf<String>()
+    fun shouldShowEventAlert(eventId: String): Boolean {
         return hiddenEventAlerts.contains(eventId).not()
     }
 
-    fun hideEventAlert(eventId: Long) {
+    fun hideEventAlert(eventId: String) {
         hiddenEventAlerts.add(eventId)
     }
 

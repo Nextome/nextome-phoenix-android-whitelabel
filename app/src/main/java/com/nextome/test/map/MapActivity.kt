@@ -27,7 +27,7 @@ import com.nextome.localization.facade.state.IdleState
 import com.nextome.localization.facade.state.LocalizationRunningState
 import com.nextome.localization.facade.state.SearchVenueState
 import com.nextome.localization.facade.state.StartedState
-import com.nextome.nxt_data.data.NextomeEvent
+import com.nextome.nxt_data.data.NextomeFence
 import com.nextome.nxt_data.data.NextomePoi
 import com.nextome.nxt_data.data.NextomePosition
 import com.nextome.test.R
@@ -217,23 +217,23 @@ class MapActivity : AppCompatActivity() {
         }
 
         viewModel.nextomeSdk.getEnterEventObservable().asLiveData().observe(this) { event ->
-            Log.e("event_test", "Received on enter with id ${event.event.id} and data: ${event.event.data}")
+            Log.e("event_test", "Received on enter with id ${event.event.id} and data: ${event.event.name}")
             showEventDialog(event.event, true)
         }
 
         viewModel.nextomeSdk.getExitEventObservable().asLiveData().observe(this) { event ->
-            Log.e("event_test", "Received on exit with id ${event.event.id} and data: ${event.event.data}")
+            Log.e("event_test", "Received on exit with id ${event.event.id} and data: ${event.event.name}")
             showEventDialog(event.event, false)
         }
     }
 
     var eventDialog: AlertDialog? = null
-    private fun showEventDialog(event: NextomeEvent, isEnter: Boolean) {
+    private fun showEventDialog(event: NextomeFence, isEnter: Boolean) {
         if (viewModel.shouldShowEventAlert(event.id)) {
             val message = if (isEnter) {
-                "Enter event ${event.id} (${event.data})"
+                "Enter event ${event.id} (${event.name})"
             } else {
-                "Exit event ${event.id} (${event.data})"
+                "Exit event ${event.id} (${event.name})"
             }
 
             eventDialog?.dismiss()
