@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -6,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.nextome.test"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.nextome.test"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -34,9 +36,18 @@ android {
 
     packagingOptions {
         resources {
-            excludes += listOf("META-INF/DEPENDENCIES", "META-INF/LICENSE", "META-INF/LICENSE.txt",
-                "META-INF/license.txt", "META-INF/NOTICE", "META-INF/NOTICE.txt", "META-INF/notice.txt",
-                "META-INF/ASL2.0", "META-INF/atomicfu.kotlin_module", "META-INF/INDEX.LIST")
+            excludes += listOf(
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/license.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt",
+                "META-INF/notice.txt",
+                "META-INF/ASL2.0",
+                "META-INF/atomicfu.kotlin_module",
+                "META-INF/INDEX.LIST"
+            )
         }
     }
 
@@ -54,7 +65,7 @@ val koinVersion = "3.4.0"
 
 dependencies {
 
-    implementation("com.nextome.localization:nextome_localization:3.0.6")
+    implementation("com.nextome.localization:nextome_localization:3.0.7")
     implementation("com.nextome.nextomemapview:nextomemapview:2.1.3.1")
     implementation("net.nextome.nextome_map_module:flutter_release:2.1.3")
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0")
