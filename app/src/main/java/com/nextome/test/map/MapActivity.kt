@@ -21,7 +21,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.nextome.localization.facade.state.FindFloorState
+import com.nextome.localization.facade.state.EvaluateIndoorOutdoorState
 import com.nextome.localization.facade.state.GetPacketState
 import com.nextome.localization.facade.state.IdleState
 import com.nextome.localization.facade.state.LocalizationRunningState
@@ -182,9 +182,17 @@ class MapActivity : AppCompatActivity() {
                     updateState("Downloading venue ${state.venueId}...")
                 }
 
-                is FindFloorState -> {
+                is EvaluateIndoorOutdoorState -> {
                     showOpenStreetMap()
-                    updateState("Finding current Floor on venue ${state.venueId}...")
+                    if(state.detectionType !=null){
+                        if(state.detectionType!!.lowercase() == "gps"){
+                            updateState("Detected near venue ${state.venueId}\nWaiting to be located inside...")
+                        }else{
+                            updateState("Finding current Floor on venue ${state.venueId}...")
+                        }
+                    }else{
+                        updateState("Switched outdoor venue ${state.venueId}\nWaiting to be located inside...")
+                    }
                 }
 
                 is LocalizationRunningState -> {
@@ -499,11 +507,54 @@ class MapActivity : AppCompatActivity() {
         return super.onKeyDown(keyCode, event)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
+        super.onBackPressed()
+        viewModel.mapManager.flutterMap.onBackPressed()
         moveTaskToBack(true)
     }
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    override fun onPostResume() {
+        super.onPostResume()
+        viewModel.mapManager.flutterMap.onPostResume()
+        // Workaround for
+        // https://github.com/flutter/flutter/issues/87623
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let { viewModel.mapManager.flutterMap.onNewIntent(intent)}
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        viewModel.mapManager.flutterMap.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+        viewModel.mapManager.flutterMap.onActivityResult(resultCode, resultCode, data)
+    }
+
+    override fun onUserLeaveHint() {
+        viewModel.mapManager.flutterMap.onUserLeaveHint()
+    }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        viewModel.mapManager.flutterMap.onTrimMemory(level)
     }
 }

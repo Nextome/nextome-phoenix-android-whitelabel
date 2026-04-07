@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.nextome.test"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.nextome.test"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -34,7 +34,7 @@ android {
         }
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += listOf(
                 "META-INF/DEPENDENCIES",
@@ -65,9 +65,9 @@ val koinVersion = "3.4.0"
 
 dependencies {
 
-    implementation("com.nextome.localization:nextome_localization:3.0.7")
-    implementation("com.nextome.nextomemapview:nextomemapview:2.1.3.1")
-    implementation("net.nextome.nextome_map_module:flutter_release:2.1.3")
+    implementation("com.nextome.localization:nextome_localization:3.2.1")
+    implementation("com.nextome.nextomemapview:nextomemapview:2.1.4.0")
+    implementation("net.nextome.nextome_map_module:flutter_release:2.1.4")
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0")
     implementation ("androidx.activity:activity-ktx:1.6.1")
     implementation ("androidx.fragment:fragment-ktx:1.5.4")

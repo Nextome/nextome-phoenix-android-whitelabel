@@ -13,6 +13,7 @@ import com.nextome.nextomemapview.models.NMMarker
 import com.nextome.nxt_data.data.CriticalException
 import com.nextome.nxt_data.data.GenericException
 import com.nextome.nxt_data.data.InvalidCredentialException
+import com.nextome.nxt_data.data.NetworkException
 import com.nextome.nxt_data.data.NextomeException
 import com.nextome.nxt_data.data.NextomePoi
 import com.nextome.nxt_data.data.NextomePosition
@@ -138,6 +139,11 @@ class MapViewModel(
 
             is CriticalException -> {
                 _uiEvents.value = ShowMessageEvent(message = error.message)
+            }
+
+            is NetworkException -> {
+                var message = error.statusCode + error.message + " " + error.type
+                _uiEvents.value = ShowMessageEvent(message = message)
             }
         }
     }
