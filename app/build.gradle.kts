@@ -65,7 +65,7 @@ val koinVersion = "3.4.0"
 
 dependencies {
 
-    implementation("com.nextome.localization:nextome_localization:3.2.1")
+    implementation("com.nextome.localization:nextome_localization:3.2.3")
     implementation("com.nextome.nextomemapview:nextomemapview:2.1.4.0")
     implementation("net.nextome.nextome_map_module:flutter_release:2.1.4")
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0")
