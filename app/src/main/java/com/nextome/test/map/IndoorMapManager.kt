@@ -35,7 +35,7 @@ class IndoorMapManager {
         tile.name = mapId.toString()
         tile.id = mapId.toString()
         tile.source = mapTilesUrl
-        flutterMap.setResources(tiles = listOf(tile), zoom = 1, width = mapWidth, height = mapHeight, useMockView = false)
+        flutterMap.setResources(tiles = listOf(tile), zoom = 1, deepZoom = true, width = mapWidth, height = mapHeight, useMockView = false)
     }
 
     /**

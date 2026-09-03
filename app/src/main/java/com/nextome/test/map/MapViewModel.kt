@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.nextome.localization.NextomeLocalizationSdk
 import com.nextome.localization.background.NMNotification
 import com.nextome.nextomemapview.models.NMMarker
+import com.nextome.nm_data.data.SdkCredentials
 import com.nextome.nxt_data.data.CriticalException
 import com.nextome.nxt_data.data.GenericException
 import com.nextome.nxt_data.data.InvalidCredentialException
@@ -81,10 +82,15 @@ class MapViewModel(
     private fun initNextomeSdk(settings: AppOverriddenSettings?) {
         val nextomeOverriddenSettings = settings ?: AppOverriddenSettings()
 
+        val credentials = SdkCredentials.ClientSecretCredentials(
+            clientId = sdkCredentials.clientId,
+            clientSecret = sdkCredentials.clientSecret
+        )
+
         // Initialize Nextome SDK (make sure to use Application context)
         nextomeSdk = NextomeLocalizationSdk(
-            clientId = sdkCredentials.clientId,
-            clientSecret = sdkCredentials.clientSecret,
+            null,
+            credentials = credentials,
             scanPeriod = nextomeOverriddenSettings.scanPeriod,
             betweenScanPeriod = nextomeOverriddenSettings.betweenScanPeriod,
             rssiThreshold = nextomeOverriddenSettings.rssiThreshold,
