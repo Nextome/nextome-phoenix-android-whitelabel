@@ -176,6 +176,13 @@ class MapActivity : AppCompatActivity() {
                     updateState("Searching Venue...")
                 }
 
+                is NoVenueState -> {
+                    // Fired when the SDK is unable to find a venue for a maximum amount of attempts
+                    // See documentation for more details.
+                    showOpenStreetMap()
+                    updateState("No venue found")
+                }
+
                 is GetPacketState -> {
                     showOpenStreetMap()
                     viewModel.currentVenueId = state.venueId
