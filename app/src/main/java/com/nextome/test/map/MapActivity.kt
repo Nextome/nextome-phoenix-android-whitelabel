@@ -25,6 +25,7 @@ import com.nextome.localization.facade.state.EvaluateIndoorOutdoorState
 import com.nextome.localization.facade.state.GetPacketState
 import com.nextome.localization.facade.state.IdleState
 import com.nextome.localization.facade.state.LocalizationRunningState
+import com.nextome.localization.facade.state.NoVenueState
 import com.nextome.localization.facade.state.SearchVenueState
 import com.nextome.localization.facade.state.StartedState
 import com.nextome.nxt_data.data.NextomeFence
